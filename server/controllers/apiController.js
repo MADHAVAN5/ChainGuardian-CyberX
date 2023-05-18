@@ -1,4 +1,5 @@
 const  axios = require('axios')
+var WAValidator = require('multicoin-address-validator');
 
 const tnxDetails = async (req, res) => {
   const chain = req.params.chain
@@ -42,4 +43,27 @@ const accDetails = async (req, res) => {
     })
 }
 
-module.exports = { tnxDetails, accDetails}
+const accValidator = async (req, res) => {
+  const address = req.params.address
+
+  if (!address) {
+    return res.status(400).json({ error: 'Missing parameters' })
+  }
+
+  blockChains = ['0x','Aave Coin','Algorand','Bitcoin','Chainlink','CUSD','Dash','DogeCoin','Ethereum','LiteCoin','Matic','Neo','Polymath','Ripple','Solana','Stellar','Tether','TrueUSD','Uniswap Coin','ZenCash']
+  chainVerified = null
+
+  for (let j = 0; j < blockChains.length; j++) {
+    var valid = WAValidator.validate(address, blockChains[j]);
+    if(valid){
+      chainVerified = blockChains[j]
+      break;
+    }
+    else{
+      continue 
+    }
+  }
+  console.log(chainVerified)
+}
+
+module.exports = { tnxDetails, accDetails, accValidator}
