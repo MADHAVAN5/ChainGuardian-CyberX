@@ -9,5 +9,4 @@ router.get("/addressData/:chain/:address",accDetails)
 router.get("/addressValidator/:address",accValidator)
 
 
-
 module.exports = router
