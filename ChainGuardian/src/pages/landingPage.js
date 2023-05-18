@@ -1,10 +1,10 @@
 import React from 'react'
+import Navbar from "../components/navbar";
 
-export default function landingPage() {
+const landingPage = () => {
   return (
-    <div>
-      <h1>hello</h1>
-    </div>
+    <Navbar/>
   )
 }
- 
+
+export default landingPage
