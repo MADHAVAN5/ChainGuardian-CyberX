@@ -6,7 +6,9 @@ function App() {
     <div className="App">
     <BrowserRouter>
         <Routes>
-          <Route path='/' element={<h1>ChainGuardian</h1>}/>
+          <Route path='/' element={<h1 class="text-3xl font-bold underline">
+    Hello world!
+  </h1>}/>
         </Routes>
     </BrowserRouter>
     </div>
