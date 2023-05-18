@@ -32,11 +32,27 @@ const accDetails = async (req, res) => {
 
   const apiUrl = `https://api.blockchair.com/${chain}/dashboards/address/${address}?key=${process.env.APIKEY}`
   console.log(apiUrl)
+  finalData = {}
   axios.get(apiUrl)
     .then(response =>{
       const data = response.data
       console.log(data)
-      res.json(data)
+      finalData['address'] = address
+      finalData['balanceUSD'] = data.data[address]["address"]['balance_usd']
+      finalData['balanceETH'] = data.data[address]["address"]['balance'] / 1000000000000000000
+      finalData['sendUSD'] = data.data[address]["address"]['spent_usd']
+      finalData['feesUSD'] = data.data[address]["address"]['fees_usd']
+      finalData['receivedUSD'] = data.data[address]["address"]['received_usd']
+
+      finalData['transactions'] = {}
+      for (let i = 0; i < data.data[address]["calls"].length; i++) {
+        finalData['transactions'][i] = {}
+        finalData['transactions'][i]['transaction'] = data.data[address]["calls"][i].transaction_hash
+        finalData['transactions'][i]['sender'] = data.data[address]["calls"][i].sender
+        finalData['transactions'][i]['receiver'] = data.data[address]["calls"][i].recipient
+      }
+
+      res.json(finalData)
     })
     .catch(error => {
       res.status(404).json({ error: error.message })
