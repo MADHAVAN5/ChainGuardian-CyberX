@@ -1,12 +1,14 @@
 import './App.css'
 import { BrowserRouter,Route,Routes } from 'react-router-dom'
 
+import LandingPage from './pages/landingPage'
+
 function App() {
   return (
     <div className="App">
     <BrowserRouter>
         <Routes>
-          <Route path='/' element={<h1>ChainGuardian</h1>}/>
+          <Route path='/' element={<LandingPage />}/>
         </Routes>
     </BrowserRouter>
     </div>
