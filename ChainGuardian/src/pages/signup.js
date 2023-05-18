@@ -25,65 +25,61 @@ function Signup() {
   }
 
   return (
-    <div className='flex-col justify-center'>
+    <div className='h-screen flex bg-gray-bg1'>
+    <div className='w-full max-w-md m-auto bg-indigo-600 rounded-lg shadow-default py-10 px-16'>
+        <h1 className='text-2xl font-medium text-white mt-4 mb-12 text-center'>
+            Sign UP 🔐
+        </h1>
 
-    <Card className='bg-sky-500/100 w-1/2 text-center p-10' shadow={false}>
-      <Typography variant="h4" color="blue-gray">
-        Sign Up
-      </Typography>
-      <Typography color="gray" className="mt-1 font-normal">
-        Enter your details to register.
-      </Typography>
-      <form onSubmit={handleSubmit} className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
-        <div className="mb-4 w-full flex flex-col gap-6">
-          <Input size="lg" label="Name" type="text"
-            onChange={(e) => setDisplayName(e.target.value)}
-            value={displayName} />
-          <Input onChange={(e) => setEmail(e.target.value)}
-            value={email} size="lg" label="Email" />
-          <Input type="password" onChange={(e) => setPassword(e.target.value)}
-            value={password} size="lg" label="Password" />
-        </div>
-        <Checkbox
-          label={
-            (
-              <Typography
-                variant="small"
-                color="gray"
-                className="flex items-center font-normal"
-              >
-                I agree the
-                <a
-                  href="#"
-                  className="font-medium transition-colors hover:text-blue-500"
-                >
-                  &nbsp;Terms and Conditions
-                </a>
-              </Typography>
-            )
-          }
-          containerProps={{ className: "-ml-2.5" }}
-        />
-        {isPending ? <button className="btn" disabled>Loading..</button> : <button className="btn">Signup</button>}
-        <Typography color="gray" className="mt-4 text-center font-normal">
-          Already have an account?{" "}
-          <a
-            href="#"
-            className="font-medium text-blue-500 transition-colors hover:text-blue-700"
-          >
-            Sign In
-          </a>
-        </Typography>
-
-        {error && <div className="error">{error}</div>}
-        <div className="google-auth-button">
+        <form onSubmit={handleSubmit}>
+            <div>
+                <label htmlFor='email' className='text-white'>Name</label>
+                <input
+                    type='text'
+                    className={`w-full p-2 border rounded-md outline-none text-sm transition duration-150 ease-in-out mb-4`}
+                    id='name'
+                    placeholder='Your Name'
+                    onChange={(e) => setDisplayName(e.target.value)}
+                    value={displayName}
+                />
+            </div>
+            <div>
+                <label htmlFor='password' className='text-white'>Email</label>
+                <input
+                    type='email'
+                    className={`w-full p-2 border rounded-md outline-none text-sm transition duration-150 ease-in-out mb-4`}
+                    id='email'
+                    placeholder='Your Password'
+                    onChange={(e) => setEmail(e.target.value)}
+                    value={email}
+                />
+            </div>
+            <div>
+                <label htmlFor='password' className='text-white'>Password</label>
+                <input
+                    type='password'
+                    className={`w-full p-2 border rounded-md outline-none text-sm transition duration-150 ease-in-out mb-4`}
+                    id='password'
+                    placeholder='Your Password'
+                    onChange={(e) => setPassword(e.target.value)}
+                    value={password}
+                />
+            </div>
+            <div className='flex justify-center items-center mt-6'>
+            {isPending ? <button  className={`bg-indigo-600 py-2 px-4 text-sm text-white rounded border border-green focus:outline-none focus:border-green-dark`} disabled>Loading..</button> : <button  className={`bg-indigo-600 py-2 px-4 text-sm text-white rounded border border-green focus:outline-none focus:border-green-dark`}>Signup</button>}
+            </div>
+            <div className='text-white flex justify-center'>
+              Already have an account? {" "}<a className='text-black' href="signin">Clickhear...</a>
+            </div>
+            {error && <div className="error">{error}</div>}
+        <div className="google-auth-button flex justify-center p-2">
           <div className='google-btn'>
             <GoogleButton onClick={() => signUpWithGoogle()} />
           </div>
         </div>
-      </form>
-    </Card>
+        </form>
     </div>
+</div>
 
   )
 }
