@@ -25,7 +25,9 @@ function Signup() {
   }
 
   return (
-    <Card color="transparent" shadow={false}>
+    <div className='flex-col justify-center'>
+
+    <Card className='bg-sky-500/100 w-1/2 text-center p-10' shadow={false}>
       <Typography variant="h4" color="blue-gray">
         Sign Up
       </Typography>
@@ -33,7 +35,7 @@ function Signup() {
         Enter your details to register.
       </Typography>
       <form onSubmit={handleSubmit} className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
-        <div className="mb-4 flex flex-col gap-6">
+        <div className="mb-4 w-full flex flex-col gap-6">
           <Input size="lg" label="Name" type="text"
             onChange={(e) => setDisplayName(e.target.value)}
             value={displayName} />
@@ -81,6 +83,8 @@ function Signup() {
         </div>
       </form>
     </Card>
+    </div>
+
   )
 }
 
