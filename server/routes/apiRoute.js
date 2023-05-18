@@ -1,9 +1,9 @@
 const express = require("express")
-const { testing } = require("../controllers/apiController")
+const { tnxDetails } = require("../controllers/apiController")
 
 const router = express.Router()
 
-router.get("/data",testing)
+router.get("/data/:chain/:txn_id",tnxDetails)
 
 
 module.exports = router
