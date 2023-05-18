@@ -1,12 +1,5 @@
 import React, { useState } from 'react'
 import GoogleButton from 'react-google-button'
-import {
-  Card,
-  Input,
-  Checkbox,
-  Button,
-  Typography,
-} from "@material-tailwind/react";
 
 import { useSignup } from '../hooks/useSignup'
 

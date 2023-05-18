@@ -5,6 +5,7 @@ import { BrowserRouter,Route,Routes } from 'react-router-dom'
 import LandingPage from './pages/landingPage'
 import Signup from './pages/signup'
 import Signin from './pages/signin'
+import Forgot from './pages/forgot'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path='/' element={<LandingPage />}/>
           <Route path='/auth/signup' element={<Signup />}/>
           <Route path='/auth/signin' element={<Signin />}/>
+          <Route path='/auth/forgot' element={<Forgot />}/>
         </Routes>
     </BrowserRouter>
     </div>
