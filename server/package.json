@@ -1,0 +1,26 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "the backend for the ChainGuardian",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/tech-creed/ChainGuardian-CyberX.git"
+  },
+  "author": "TENSHKUMAR K, MUKILAN S, MADAVAN K",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tech-creed/ChainGuardian-CyberX/issues"
+  },
+  "homepage": "https://github.com/tech-creed/ChainGuardian-CyberX#readme",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2"
+  }
+}
