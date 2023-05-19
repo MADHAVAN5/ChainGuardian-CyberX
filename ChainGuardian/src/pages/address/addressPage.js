@@ -2,15 +2,23 @@ import React, { useState } from 'react'
 
 import './addressPage.css'
 
+import useAddress from '../../hooks/useAddress'
+
 const AddressPage = () => {
     const [chain, setChain] = useState(null)
-    const [txnId, setTxnId] = useState(null)
-    const { error, isPending, data, getTransaction } = useTransaction()
-
+    const [address, setAddress] = useState(null)
+    const { error, isPending, data, whichChain, checkAddressStatus, getAddressData } = useAddress()
+    const [isAddressValid, setAddressValid] = useState(false)
+ 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(chain)
-        getTransaction(chain, txnId)
+        checkAddressStatus(address)
+        if(whichChain){
+            getAddressData(whichChain,address)
+            setAddressValid(false)
+        }else{
+            setAddressValid(true)
+        }
     }
 
     return (
@@ -18,7 +26,7 @@ const AddressPage = () => {
             <div className='h-screen flex bg-gray-bg1'>
                 <div className='w-full max-w-md m-auto bg-indigo-600 rounded-lg shadow-default py-10 px-16'>
                     <h1 className='text-2xl font-medium text-white mt-4 mb-12 text-center'>
-                        Submit 
+                        Submit the Address details
                     </h1>
                     <form onSubmit={handleSubmit}>
                         <div>
@@ -26,10 +34,10 @@ const AddressPage = () => {
                             <input
                                 type='text'
                                 className={`w-full p-2 border rounded-md outline-none text-sm transition duration-150 ease-in-out mb-4`}
-                                id='txn_id'
-                                placeholder='chain address'
-                                onChange={(e) => setTxnId(e.target.value)}
-                                value={txnId}
+                                id='chain_address'
+                                placeholder='enter chain address'
+                                onChange={(e) => setAddress(e.target.value)}
+                                value={address}
                             />
                             <div>
                                 <label htmlFor='email' className='text-white'>Select Your Chain</label>
@@ -58,6 +66,7 @@ const AddressPage = () => {
                             {isPending ? <button className={`bg-indigo-600 py-2 px-4 text-sm text-white rounded border border-green focus:outline-none focus:border-green-dark`} disabled>Loading..</button> : <button className={`bg-indigo-600 py-2 px-4 text-sm text-white rounded border border-green focus:outline-none focus:border-green-dark`}>Find</button>}
                         </div>
                         {error && <div className="error">{error}</div>}
+                        {!isAddressValid && <div class='error'>Could not fetch the details for this address</div>}
                         {data && <TransactionSection data={data} />}
                     </form>
                 </div>
