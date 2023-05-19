@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
 import ThemeChanger from "./darkSwitch.js";
 import { Disclosure } from "@headlessui/react";
+import Logo from "../public/logo.png"
 
 const Navbar = () => {
   const navigation = [
-    "Product",
-    "Features",
-    "Pricing",
-    "Company",
-    "Blog",
+    "Home",
+    "About",
+    "Service",
+    "Doc",
   ];
 
   return (
@@ -23,14 +23,14 @@ const Navbar = () => {
                   <span className="flex items-center space-x-2 text-2xl font-medium text-indigo-500 dark:text-gray-100">
                     <span>
                       <img
-                        src="/img/logo.svg"
-                        alt="N"
+                        src={Logo}
+                        alt="logo"
                         width="32"
                         height="32"
                         className="w-8"
                       />
                     </span>
-                    <span>Nextly</span>
+                    <span>Chain Guardian</span>
                   </span>
                 </Link>
 
@@ -64,8 +64,8 @@ const Navbar = () => {
                           {item}
                       </Link>
                     ))}
-                    <Link href="/" className="w-full px-6 py-2 mt-3 text-center text-white bg-indigo-600 rounded-md lg:ml-5">         
-                        Get Started
+                    <Link href="auth/signin" className="w-full px-6 py-2 mt-3 text-center text-white bg-indigo-600 rounded-md lg:ml-5">         
+                        Signin
                     </Link>
                   </>
                 </Disclosure.Panel>
