@@ -50,7 +50,7 @@ const accGraph = async (req, res) => {
               id: 'walletId-'+transKeys[h],
               source: 'walletId',
               target: transKeys[h], 
-              animated:true 
+              animated:true,
             })
         }
         y += 300
@@ -78,13 +78,15 @@ const accGraph = async (req, res) => {
                 id: transKeys[h]+'-S',
                 target: transKeys[h],
                 source: 'S-'+transKeys[h], 
-                animated:true 
+                animated:true, 
+                label: 'Sender'
               })
             edges.push({
                 id: transKeys[h]+'-R',
                 target: transKeys[h],
                 source: 'R-'+transKeys[h], 
-                animated:true 
+                animated:true,
+                label: 'Receiver'
               })
         }
         res.json({'nodes':nodes,'edges':edges})
