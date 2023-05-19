@@ -14,13 +14,14 @@ function Transaction() {
   const handleSubmit = (chain,txnId) => {
     getTransaction(chain,txnId)
     setTxnId(txnId)
+    console.log(data)
   }
   return (
     <>
       <Navbar/>
       <Find handleSubmit={handleSubmit}/>
       {data && <TransactionSection data={data} txnId={Id}/>}
-      <Table/>
+      <Table data={data}/>
     </>
   )
 }
