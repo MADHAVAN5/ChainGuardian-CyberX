@@ -14,9 +14,34 @@ const tnxDetails = async (req, res) => {
 
   axios.get(apiUrl)
     .then(response =>{
+      console.log(response)
       const data = response.data
-      console.log(data)
-      res.json(data)
+      finalSend['transaction'] = {}
+      finalSend['inputs'] = {}
+      finalSend['outputs'] = {}
+
+      finalSend['transaction']['id'] = data[chain]['transaction'].id
+      finalSend['transaction']['block_id'] = data[chain]['transaction'].block_id
+      finalSend['transaction']['time'] = data[chain]['transaction'].time
+      finalSend['transaction']['input_total_usd'] = data[chain]['transaction'].input_total_usd
+      finalSend['transaction']['fee_usd'] = data[chain]['transaction'].fee_usd
+      finalSend['transaction']['size'] = data[chain]['transaction'].size
+      finalSend['transaction']['weight'] = data[chain]['transaction'].size
+
+      finalSend['inputs']['id'] = data[chain]['inputs'].id
+      finalSend['inputs']['block_id'] = data[chain]['inputs'].block_id
+      finalSend['inputs']['time'] = data[chain]['inputs'].time
+      finalSend['inputs']['recipient'] = data[chain]['inputs'].recipient
+      finalSend['inputs']['transfered'] = data[chain]['inputs'].is_spent
+
+      finalSend['outputs']['id'] = data[chain]['outputs'].id
+      finalSend['outputs']['block_id'] = data[chain]['outputs'].block_id
+      finalSend['outputs']['time'] = data[chain]['outputs'].time
+      finalSend['outputs']['recipient'] = data[chain]['outputs'].recipient
+      finalSend['outputs']['transfered'] = data[chain]['outputs'].is_spent
+      
+      //console.log(data)
+      res.json(finalSend)
     })
     .catch(error => {
       res.status(404).json({ error: error.message })

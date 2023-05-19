@@ -7,10 +7,9 @@ const useTransaction = () => {
 
     const getTransaction = async (chain, txn_id) => {
         setError(null)
-        setPending(true)
 
         await fetch(`/api/addressData/${chain}/${txn_id}`)
-        .then((response)=>{response.json()})
+        .then((response)=>{console.log(response)})
         .then(data=>{
             console.log(data)
             setPending(false)

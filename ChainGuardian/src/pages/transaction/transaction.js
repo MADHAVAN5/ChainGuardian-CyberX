@@ -15,7 +15,6 @@ function Transaction() {
     getTransaction(chain,txnId)
     setTxnId(txnId)
   }
-
   return (
     <>
       <Navbar/>

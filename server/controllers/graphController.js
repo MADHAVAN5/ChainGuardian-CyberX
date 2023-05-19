@@ -20,26 +20,27 @@ const accGraph = async (req, res) => {
                 type: 'input',
                 data: { label: address },
                 position: { x: x, y: y },
-                style: { width: 280, height: 120 },
+                style: { width: 280, height: 75 },
             }
         ]
         transKeys = Object.keys(finalData['detailTransactions'])
-        y += 100
-        x -+ 2200
+        y += 230
+        x -= 1800
         for (let h = 0; h < noOfTrans; h++) {
             var element = finalData['detailTransactions'][h];
+            console.log(finalData['detailTransactions'][transKeys[h]])
             nodes.push({
                 id: transKeys[h],
                 type: 'custom',
                 data: {hash:transKeys[h], 
-                    blockID:finalData['detailTransactions'][transKeys[h]]['block_id'],
-                    blockID:finalData['detailTransactions'][transKeys[h]]['time'],
-                    blockID:finalData['detailTransactions'][transKeys[h]]['usd'],
-                    blockID:finalData['detailTransactions'][transKeys[h]]['transferred'],
+                    block_id:finalData['detailTransactions'][transKeys[h]]['block_id'],
+                    time:finalData['detailTransactions'][transKeys[h]]['time'],
+                    usd:finalData['detailTransactions'][transKeys[h]]['usd'],
+                    transferred:finalData['detailTransactions'][transKeys[h]]['transferred'],
                     type: 'Transaction', emoji: '💸'},
                 position: {x: x, y: y}
             })
-            x += 500
+            x += 800
         }
         var edges = [
                                 
@@ -52,7 +53,40 @@ const accGraph = async (req, res) => {
               animated:true 
             })
         }
-        console.log(edges)
+        y += 300
+        x = -2000
+        for (let h = 0; h < noOfTrans; h++) {
+            nodes.push({
+                id: 'S-'+transKeys[h],
+                type: 'input',
+                data: { label: finalData['detailTransactions'][transKeys[h]]['sender'] },
+                position: { x: x, y: y },
+                style: { width: 280, height: 60 },
+            })
+            x+=420
+            nodes.push({
+                id: 'R-'+transKeys[h],
+                type: 'input',
+                data: { label: finalData['detailTransactions'][transKeys[h]]['receiver'] },
+                position: { x: x, y: y },
+                style: { width: 280, height: 60 },
+            })
+            x+=420
+        }
+        for (let h = 0; h < noOfTrans; h++) {
+            edges.push({
+                id: transKeys[h]+'-S',
+                target: transKeys[h],
+                source: 'S-'+transKeys[h], 
+                animated:true 
+              })
+            edges.push({
+                id: transKeys[h]+'-R',
+                target: transKeys[h],
+                source: 'R-'+transKeys[h], 
+                animated:true 
+              })
+        }
         res.json({'nodes':nodes,'edges':edges})
     }else{
         const apiUrl = `https://api.blockchair.com/${chain}/dashboards/address/${address}?key=${process.env.APIKEY}`
@@ -98,12 +132,14 @@ const accGraph = async (req, res) => {
                 await axios.get(tempUrl)
                 .then(response =>{
                     var tmpData = response.data
+                    console.log(tmpData.data[element]['transaction'])
+
                     finalData['detailTransactions'][element] = {}
                     finalData['detailTransactions'][element]['block_id'] = tmpData.data[element]['transaction'].block_id
-                    finalData['detailTransactions'][element]['sender'] = tmpData.data[element]['transaction'].id
-                    finalData['detailTransactions'][element]['receiver'] = tmpData.data[element]['transaction'].date
+                    finalData['detailTransactions'][element]['sender'] = tmpData.data[element]['inputs'][0].recipient
+                    finalData['detailTransactions'][element]['receiver'] = tmpData.data[element]['outputs'][0].recipient
                     finalData['detailTransactions'][element]['time'] =tmpData.data[element]['transaction'].time
-                    finalData['detailTransactions'][element]['usd'] = tmpData.data[element]['transaction'].usd
+                    finalData['detailTransactions'][element]['usd'] = tmpData.data[element]['transaction'].input_total_usd
                     finalData['detailTransactions'][element]['transferred'] = true
                     
                     //console.log(index, finalData['transactions'].length)
@@ -129,21 +165,21 @@ const accGraph = async (req, res) => {
                             ]
                             transKeys = Object.keys(finalData['detailTransactions'])
                             y += 100
-                            x -+ 4000
+                            x -= 2000
                             for (let h = 0; h < noOfTrans; h++) {
                                 var element = finalData['detailTransactions'][h];
                                 nodes.push({
                                     id: transKeys[h],
                                     type: 'custom',
                                     data: {hash:transKeys[h], 
-                                        blockID:finalData['detailTransactions'][transKeys[h]]['block_id'],
-                                        blockID:finalData['detailTransactions'][transKeys[h]]['time'],
-                                        blockID:finalData['detailTransactions'][transKeys[h]]['usd'],
-                                        blockID:finalData['detailTransactions'][transKeys[h]]['transferred'],
+                                        block_id:finalData['detailTransactions'][transKeys[h]]['block_id'],
+                                        time:finalData['detailTransactions'][transKeys[h]]['time'],
+                                        usd:finalData['detailTransactions'][transKeys[h]]['usd'],
+                                        transferred:finalData['detailTransactions'][transKeys[h]]['transferred'],
                                         type: 'Transaction', emoji: '💸'},
                                     position: {x: x, y: y}
                                 })
-                                x += 500
+                                x += 450
                             }
                             var edges = [
                                 
@@ -156,7 +192,28 @@ const accGraph = async (req, res) => {
                                     animated:true 
                                 })
                             }
-                            console.log(edges)
+
+                            y += 300
+                            x = -2000
+                            for (let h = 0; h < noOfTrans; h++) {
+                                nodes.push({
+                                    id: 'S-'+transKeys[h],
+                                    type: 'input',
+                                    data: { label: finalData['detailTransactions'][transKeys[h]]['sender'] },
+                                    position: { x: x, y: y },
+                                    style: { width: 280, height: 60 },
+                                })
+                                x+=420
+                                nodes.push({
+                                    id: 'R-'+transKeys[h],
+                                    type: 'input',
+                                    data: { label: finalData['detailTransactions'][transKeys[h]]['receiver'] },
+                                    position: { x: x, y: y },
+                                    style: { width: 280, height: 60 },
+                                })
+                                x+=420
+                    
+                            }
                             res.json({'nodes':nodes, 'edges':edges})
                         }
                     })
