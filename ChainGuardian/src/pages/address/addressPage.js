@@ -13,7 +13,7 @@ const AddressPage = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
         checkAddressStatus(address)
-        if(whichChain){
+        if((isPending === false) && whichChain){
             getAddressData(whichChain,address)
             setAddressValid(false)
         }else{
@@ -63,11 +63,11 @@ const AddressPage = () => {
                             </div>
                         </div>
                         <div className='flex justify-center items-center mt-6'>
-                            {isPending ? <button className={`bg-indigo-600 py-2 px-4 text-sm text-white rounded border border-green focus:outline-none focus:border-green-dark`} disabled>Loading..</button> : <button className={`bg-indigo-600 py-2 px-4 text-sm text-white rounded border border-green focus:outline-none focus:border-green-dark`}>Find</button>}
+                        {(isAddressValid !== true) && isPending ? <button className={`bg-indigo-600 py-2 px-4 text-sm text-white rounded border border-green focus:outline-none focus:border-green-dark`} disabled>Loading..</button> : <button className={`bg-indigo-600 py-2 px-4 text-sm text-white rounded border border-green focus:outline-none focus:border-green-dark`}>Find</button>}
                         </div>
                         {error && <div className="error">{error}</div>}
-                        {!isAddressValid && <div class='error'>Could not fetch the details for this address</div>}
-                        {data && <TransactionSection data={data} />}
+                        {isAddressValid && <div class='error'>Could not fetch the details for this address</div>}
+                        {/* {data && <TransactionSection data={data} />} */}
                     </form>
                 </div>
             </div>
