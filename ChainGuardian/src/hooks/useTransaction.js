@@ -21,7 +21,6 @@ const useTransaction = () => {
             setPending(false)
             setError(null)
             setData(json)
-            console.log(json)
         }
     }
     return { error, isPending, data, getTransaction }

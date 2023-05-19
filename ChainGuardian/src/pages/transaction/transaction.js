@@ -40,9 +40,9 @@ function Transaction() {
                   <option value="" disabled="disabled" selected="selected">Select option</option>
                   <option value="bitcoin">Bitcoin</option>
                   <option value="bitcoin-cash">Bitcoin Cash</option>
-                  <option value="ethereum" onClick={(e) => setChain(e.target.value)}>Ethereum</option>
-                  <option value="litecoin" onClick={(e) => setChain(e.target.value)}>Litecoin</option>
-                  <option value="bitcoin-sv" onClick={(e) => setChain(e.target.value)}>Bitcoin-sv</option>
+                  <option value="ethereum">Ethereum</option>
+                  <option value="litecoin">Litecoin</option>
+                  <option value="bitcoin-sv">Bitcoin-sv</option>
                 </select>
                 <svg>
                   <use xlinkHref="#select-arrow-down"></use>
@@ -63,7 +63,6 @@ function Transaction() {
         </form>
       </div>
     </div>
-
   )
 }
 

@@ -3,55 +3,48 @@ import { useState } from "react"
 const useAddress = () => {
     const [error, setError] = useState(null)
     const [isPending, setPending] = useState(false)
+    const [whichChain, setWhichChain] = useState(false)
     const [data, setData] = useState(null)
 
-    const checkAddressStatus = (address) => {
+    const checkAddressStatus = async (address) => {
+        setError(null)
+        setPending(true)
+        const response = await fetch(`/api/addressValidator/${address}`)
+        const json = await response.json()
+        if (!response.ok) {
+            setPending(false)
+            setWhichChain(null)
+            setError(json.error)
+        }
+
+        if (response.ok) {
+            setPending(false)
+            setError(null)
+            setWhichChain(json)
+        }
+    }
+
+    const getAddressData = async (chain, address) => {
         setError(null)
         setPending(true)
         const abortController = new AbortController()
-
-       fetch(`/api/addressValidator/${address}`)
-            .then((res) => res.json())
-                .then(data=>{
-                    if (!abortController.signal.aborted) {
-                        setPending(false)
-                        setError(null)
-                        setData(data)
-                    }
-                })    
-            .catch((err) => {
-                if (!abortController.signal.aborted) {
-                    setError(err.message)
-                    setPending(false)
-                    setData(null)
-                }
-            })
+        const response = await fetch(`/api/addressData/${chain}/${address}`)
+        const json = await response.json()
+        if (!response.ok) {
+            setPending(false)
+            setData(null)
+            setError(json.error)
         }
 
-        const getAddressData = (chain,address) => {
+        if (response.ok) {
+            setPending(false)
             setError(null)
-            setPending(true)
-            const abortController = new AbortController()
-    
-           fetch(`/api/addressData/${chain}/${address}`)
-                .then((res) => res.json())
-                    .then(data=>{
-                        if (!abortController.signal.aborted) {
-                            setPending(false)
-                            setError(null)
-                            setData(data)
-                        }
-                    })    
-                .catch((err) => {
-                    if (!abortController.signal.aborted) {
-                        setError(err.message)
-                        setPending(false)
-                        setData(null)
-                    }
-                })
-            }
-
-        return {error,isPending,data,checkAddressStatus,getAddressData}
+            setData(json)
+            console.log(json)
+        }
     }
 
-    export default useAddress
+    return { error, isPending, data,whichChain, checkAddressStatus, getAddressData }
+}
+
+export default useAddress
