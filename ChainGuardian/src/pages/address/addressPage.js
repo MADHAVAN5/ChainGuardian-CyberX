@@ -7,16 +7,39 @@ import useAddress from '../../hooks/useAddress'
 const AddressPage = () => {
     const [chain, setChain] = useState(null)
     const [address, setAddress] = useState(null)
-    const { error, isPending, data,whichChain, checkAddressStatusAndFetchingDetails } = useAddress()
+    const [err, setError] = useState(null)
+    const [isPending, setPending] = useState(false)
+    const [data, setData] = useState(null)
+    const { error, data: chainName, getChain } = useAddress()
+
     const [isAddressValid, setAddressValid] = useState(false)
- 
-    const handleSubmit = (e) => {
+
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        checkAddressStatusAndFetchingDetails(address)
-            console.log(data)
-        if((isPending === false) && (whichChain !== null)){
+        setError(null)
+        setPending(true)
+        getChain(address)
+        if (!error) {
+            const response = await fetch(`/api/addressData/${chainName.chain}/${address}`)
+            const json = await response.json()
+            console.log(json)
+            if (!response.ok) {
+                setPending(false)
+                setData(null)
+                setError(json.error)
+            }
+
+            if (response.ok) {
+                setPending(false)
+                setError(null)
+                setData(json)
+                console.log(data)
+            }
+        }
+
+        else if ((isPending === false) && (chainName !== null)) {
             setAddressValid(false)
-        }else{
+        } else {
             setAddressValid(true)
         }
     }
@@ -62,9 +85,9 @@ const AddressPage = () => {
                             </div>
                         </div>
                         <div className='flex justify-center items-center mt-6'>
-                        {(isAddressValid !== true) && isPending ? <button className={`bg-indigo-600 py-2 px-4 text-sm text-white rounded border border-green focus:outline-none focus:border-green-dark`} disabled>Loading..</button> : <button className={`bg-indigo-600 py-2 px-4 text-sm text-white rounded border border-green focus:outline-none focus:border-green-dark`}>Find</button>}
+                            {(isAddressValid !== true) && isPending ? <button className={`bg-indigo-600 py-2 px-4 text-sm text-white rounded border border-green focus:outline-none focus:border-green-dark`} disabled>Loading..</button> : <button className={`bg-indigo-600 py-2 px-4 text-sm text-white rounded border border-green focus:outline-none focus:border-green-dark`}>Find</button>}
                         </div>
-                        {error && <div className="error">{error}</div>}
+                        {err && <div className="error">{err}</div>}
                         {isAddressValid && <div class='error'>Could not fetch the details for this address</div>}
                         {/* {data && <TransactionSection data={data} />} */}
                     </form>
