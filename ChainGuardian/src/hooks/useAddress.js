@@ -54,4 +54,4 @@ const useAddress = () => {
         return {error,isPending,data,checkAddressStatus,getAddressData}
     }
 
-    export default getTransaction
+    export default useAddress

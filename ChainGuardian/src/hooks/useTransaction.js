@@ -5,29 +5,26 @@ const useTransaction = () => {
     const [isPending, setPending] = useState(false)
     const [data, setData] = useState(null)
 
-    const getTransaction = (chain,txn_id) => {
+    const getTransaction = async (chain, txn_id) => {
         setError(null)
         setPending(true)
-        const abortController = new AbortController()
 
-       fetch(`/api/transData/${chain}/${txn_id}`)
-            .then((res) => res.json())
-                .then(data=>{
-                    if (!abortController.signal.aborted) {
-                        setPending(false)
-                        setError(null)
-                        setData(data)
-                    }
-                })    
-            .catch((err) => {
-                if (!abortController.signal.aborted) {
-                    setError(err.message)
-                    setPending(false)
-                    setData(null)
-                }
-            })
+        const response = await fetch(`/api/transData/${chain}/${txn_id}`)
+        const json = await response.json()
+        if (!response.ok) {
+            setPending(false)
+            setData(null)
+            setError(json.error)
         }
-        return {error,isPending,data,getTransaction}
-    }
 
-    export default getTransaction
+        if (response.ok) {
+            setPending(false)
+            setError(null)
+            setData(json)
+            console.log(json)
+        }
+    }
+    return { error, isPending, data, getTransaction }
+}
+
+export default useTransaction
