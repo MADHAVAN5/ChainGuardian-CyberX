@@ -105,14 +105,14 @@ const accValidator = async (req, res) => {
   if (!address) {
     return res.status(400).json({ error: 'Missing parameters' })
   }
-
   blockChains = ['0x','Aave Coin','Algorand','Bitcoin','Chainlink','CUSD','Dash','DogeCoin','Ethereum','LiteCoin','Matic','Neo','Polymath','Ripple','Solana','Stellar','Tether','TrueUSD','Uniswap Coin','ZenCash']
   chainVerified = null
+  blockKeyword = {'Bitcoin':'bitcoin','DogeCoin':'dogecoin','Ethereum':'ethereum','Ripple':'ripple','Stellar':'stellar','Dash':'dash','LiteCoin':'litecoin','Cardano':'cardano'}
 
   for (let j = 0; j < blockChains.length; j++) {
     var valid = WAValidator.validate(address, blockChains[j]);
     if(valid){
-      chainVerified = blockChains[j]
+      chainVerified = blockKeyword[j]
       break;
     }
     else{
