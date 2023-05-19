@@ -1,8 +1,6 @@
 import React, { useContext, useState } from 'react'
 
-import './addressPage.css'
-
-import useAddress from '../../hooks/useAddress'
+import useAddress from '../hooks/useAddress'
 
 const AddressPage = () => {
     const [chain, setChain] = useState(null)
