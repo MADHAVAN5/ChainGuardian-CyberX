@@ -6,8 +6,10 @@ import LandingPage from './pages/landingPage'
 import Signup from './pages/signup'
 import Signin from './pages/signin'
 import Forgot from './pages/forgot'
-import AddressAnalysis from './pages/wallet'
+import Dashboard from './pages/dashboardPage'
 import Transaction from './pages/transaction/transaction'
+import Address from './pages/address/addressPage'
+import Block from './pages/blockPage'
 
 function App() {
   return (
@@ -18,9 +20,10 @@ function App() {
           <Route path='/auth/signup' element={<Signup />}/>
           <Route path='/auth/signin' element={<Signin />}/>
           <Route path='/auth/forgot' element={<Forgot />}/>
-          <Route path='/api/wallet' element={<AddressAnalysis />}/>
+          <Route path='/dashboard' element={<Dashboard/>}/>
           <Route path='/transaction' element={<Transaction/>}/>
-
+          <Route path='/address' element={<Address />}/>
+          <Route path='/block' element={<Block />}/>
         </Routes>
     </BrowserRouter>
     </div>

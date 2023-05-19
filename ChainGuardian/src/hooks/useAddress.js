@@ -23,11 +23,12 @@ const useAddress = () => {
             setWhichChain(json)
         }
     }
+   
 
     const getAddressData = async (chain, address) => {
         setError(null)
         setPending(true)
-        const abortController = new AbortController()
+
         const response = await fetch(`/api/addressData/${chain}/${address}`)
         const json = await response.json()
         if (!response.ok) {
