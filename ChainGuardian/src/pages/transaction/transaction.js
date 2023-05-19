@@ -9,21 +9,18 @@ import Find from '../../components/Find'
 import Table from '../../components/Table'
 
 function Transaction() {
-  const [chain, setChain] = useState(null)
-  const [txnId, setTxnId] = useState(null)
   const { error, isPending, data, getTransaction } = useTransaction()
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log(chain)
+  const [Id , setTxnId] = useState(null)
+  const handleSubmit = (chain,txnId) => {
     getTransaction(chain,txnId)
+    setTxnId(txnId)
   }
 
   return (
     <>
       <Navbar/>
-      <Find/>
-      <TransactionSection/>
+      <Find handleSubmit={handleSubmit}/>
+      {data && <TransactionSection data={data} txnId={Id}/>}
       <Table/>
     </>
   )

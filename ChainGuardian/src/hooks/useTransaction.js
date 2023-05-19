@@ -9,20 +9,18 @@ const useTransaction = () => {
         setError(null)
         setPending(true)
 
-        const response = await fetch(`/api/addressData/${chain}/${txn_id}`)
-        const json = await response.json()
-        console.log(json)
-        if (!response.ok) {
-            setPending(false)
-            setData(null)
-            setError(json.error)
-        }
-
-        if (response.ok) {
+        await fetch(`/api/addressData/${chain}/${txn_id}`)
+        .then((response)=>{response.json()})
+        .then(data=>{
+            console.log(data)
             setPending(false)
             setError(null)
-            setData(json)
-        }
+            setData(data)
+        }).catch(err=>{
+            setPending(false)
+            setData(null)
+            setError(err.message)
+        })
     }
     return { error, isPending, data, getTransaction }
 }

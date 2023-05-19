@@ -14,7 +14,6 @@ const useAddress = () => {
             setData(null)
             setError(json.error)
         }
-
         if (response.ok) {
             setError(null)
             setData(json)

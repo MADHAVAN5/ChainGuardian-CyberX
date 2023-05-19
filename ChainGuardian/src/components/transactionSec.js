@@ -8,7 +8,7 @@ import {
 import { RocketLaunchIcon } from "@heroicons/react/24/solid";
 import { ArrowLongRightIcon } from "@heroicons/react/24/outline";
 
-export default function Example({data}) {
+export default function Example({data,txnId}) {
     return (
         <>
             <Card className="mt-6 w-full bg-white rounded-lg p-10">
