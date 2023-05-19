@@ -43,6 +43,10 @@ const accDetails = async (req, res) => {
       finalData['sendUSD'] = data.data[address]["address"]['spent_usd']
       finalData['feesUSD'] = data.data[address]["address"]['fees_usd']
       finalData['receivedUSD'] = data.data[address]["address"]['received_usd']
+      finalData['firstReceived'] = data.data[address]["address"]['first_seen_receiving']
+      finalData['lastReceived'] = data.data[address]["address"]['first_seen_spending']
+      finalData['firstSend'] = data.data[address]["address"]['first_seen_spending']
+      finalData['lastSend'] = data.data[address]["address"]['last_seen_spending']
 
       finalData['transactions'] = {}
       for (let i = 0; i < data.data[address]["calls"].length; i++) {
@@ -50,8 +54,13 @@ const accDetails = async (req, res) => {
         finalData['transactions'][i]['transaction'] = data.data[address]["calls"][i].transaction_hash
         finalData['transactions'][i]['sender'] = data.data[address]["calls"][i].sender
         finalData['transactions'][i]['receiver'] = data.data[address]["calls"][i].recipient
+        finalData['transactions'][i]['time'] = data.data[address]["calls"][i].time
+        finalData['transactions'][i]['usd'] = data.data[address]["calls"][i].value_usd
+        finalData['transactions'][i]['transferred'] = data.data[address]["calls"][i].transferred
+        finalData['transactions'][i]['block_id'] = data.data[address]["calls"][i].block_id
       }
 
+      //res.json(data)
       res.json(finalData)
     })
     .catch(error => {
