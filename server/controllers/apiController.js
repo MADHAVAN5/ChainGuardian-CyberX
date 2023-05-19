@@ -30,7 +30,7 @@ const accDetails = async (req, res) => {
   if (!chain || !address) {
     return res.status(400).json({ error: 'Missing parameters' })
   }
-  if (fs.existsSync('./controller/data/'+address+'.json')) {
+  if (fs.existsSync('./controllers/data/'+address+'.json')) {
       finalData = JSON.parse(fs.readFileSync('./controller/data/'+address+'.json').toString())
       res.json(finalData)
   }else{
@@ -42,6 +42,7 @@ const accDetails = async (req, res) => {
         const data = response.data
         //console.log(data)
         finalData['address'] = address
+        finalData['detectedChain'] = chain
         finalData['balanceUSD'] = data.data[address]["address"]['balance_usd']
         finalData['balanceETH'] = data.data[address]["address"]['balance'] / 1000000000000000000
         finalData['sendUSD'] = data.data[address]["address"]['spent_usd']

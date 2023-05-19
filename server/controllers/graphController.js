@@ -1,5 +1,6 @@
 const  axios = require('axios')
 var WAValidator = require('multicoin-address-validator');
+const fs = require('fs')
 
 const accGraph = async (req, res) => {
     const chain = req.params.chain
@@ -8,9 +9,58 @@ const accGraph = async (req, res) => {
     if (!chain || !address) {
         return res.status(400).json({ error: 'Missing parameters' })
     }
-    if (fs.existsSync('./controller/data/'+address+'.json')) {
-        finalData = JSON.parse(fs.readFileSync('./controller/data/'+address+'.json').toString())
-        res.json(finalData)
+    if (fs.existsSync('./controllers/data/'+address+'.json')) {
+        finalData = JSON.parse(fs.readFileSync('./controllers/data/'+address+'.json').toString())
+        var x = 0
+                            var y = 50
+                            var nodes = [
+                                {
+                                    id: 'walletId',
+                                    type: 'input',
+                                    data: { label: address },
+                                    position: { x: x, y: y },
+                                    style: { width: 280, height: 120 },
+                                }
+                            ]
+                            transKeys = Object.keys(finalData['detailTransactions'])
+                            y += 100
+                            x -+ 2200
+                            for (let h = 0; h < 5; h++) {
+                                var element = finalData['detailTransactions'][h];
+                                nodes.push({
+                                    id: transKeys[h],
+                                    type: 'custom',
+                                    data: {hash:transKeys[h], 
+                                        blockID:finalData['detailTransactions'][transKeys[h]]['block_id'],
+                                        blockID:finalData['detailTransactions'][transKeys[h]]['time'],
+                                        blockID:finalData['detailTransactions'][transKeys[h]]['usd'],
+                                        blockID:finalData['detailTransactions'][transKeys[h]]['transferred'],
+                                        type: 'Transaction', emoji: '💸'},
+                                    position: {x: x, y: y}
+                                })
+                                x += 500
+                            }
+                            var edges = [
+                                
+                              ];
+
+                            //   {
+                                //   id: 'e1-2',
+                                //   source: '1',
+                                //   target: '2',
+                                //   animated:true
+                                // },
+                                // {
+                                //   id: 'e1-3',
+                                //   source: '1',
+                                //   target: '3',
+                                // },
+                                // {
+                                //   id: 'e1-3',
+                                //   source: '1',
+                                //   target: '4',
+                                // },
+                            res.json({'nodes':nodes,'edges':edges})
     }else{
         const apiUrl = `https://api.blockchair.com/${chain}/dashboards/address/${address}?key=${process.env.APIKEY}`
         console.log(apiUrl)
@@ -20,6 +70,7 @@ const accGraph = async (req, res) => {
             const data = response.data
             //console.log(data)
             finalData['address'] = address
+            finalData['detectedChain'] = chain
             finalData['balanceUSD'] = data.data[address]["address"]['balance_usd']
             finalData['balanceETH'] = data.data[address]["address"]['balance'] / 1000000000000000000
             finalData['sendUSD'] = data.data[address]["address"]['spent_usd']
@@ -71,54 +122,55 @@ const accGraph = async (req, res) => {
                             console.log('Error writing file', err)
                         } else {
                             console.log('Successfully wrote file')
+                            var x = 0
+                            var y = 50
                             var nodes = [
                                 {
-                                    id: '1',
-                                    type: 'custom',
-                                    data: { name: 'Tyler Weary', job: 'Designer', emoji: '💸' },
-                                    position: { x: 0, y: 50 },
-                                    style: { width: 180, height: 100 },
-                                  },
-                                  {
-                                    id: '2',
-                                    type: 'custom',
-                                    data: { name: 'Tyler Weary', job: 'Designer', emoji: '💰' },
-                                
-                                    position: { x: -200, y: 200 },
-                                  },
-                                  {
-                                    id: '3',
-                                    type: 'custom',
-                                    data: { name: 'Kristi Price', job: 'Developer', emoji: '🔒' },
-                                    position: { x: 200, y: 200 },
-                                  },
-                                  {
-                                    id: '4',
-                                    type: 'default',
-                                    data: {
-                                      label: 'Default Node',
-                                    },
-                                    position: { x: 200, y: 200 },
-                                  },
+                                    id: 'walletId',
+                                    type: 'input',
+                                    data: { label: address },
+                                    position: { x: x, y: y },
+                                    style: { width: 280, height: 60 },
+                                }
                             ]
+                            transKeys = Object.keys(finalData['detailTransactions'])
+                            y += 100
+                            x -+ 4000
+                            for (let h = 0; h < 5; h++) {
+                                var element = finalData['detailTransactions'][h];
+                                nodes.push({
+                                    id: transKeys[h],
+                                    type: 'custom',
+                                    data: {hash:transKeys[h], 
+                                        blockID:finalData['detailTransactions'][transKeys[h]]['block_id'],
+                                        blockID:finalData['detailTransactions'][transKeys[h]]['time'],
+                                        blockID:finalData['detailTransactions'][transKeys[h]]['usd'],
+                                        blockID:finalData['detailTransactions'][transKeys[h]]['transferred'],
+                                        type: 'Transaction', emoji: '💸'},
+                                    position: {x: x, y: y}
+                                })
+                                x += 500
+                            }
                             var edges = [
-                                {
-                                  id: 'e1-2',
-                                  source: '1',
-                                  target: '2',
-                                  animated:true
-                                },
-                                {
-                                  id: 'e1-3',
-                                  source: '1',
-                                  target: '3',
-                                },
-                                {
-                                  id: 'e1-3',
-                                  source: '1',
-                                  target: '4',
-                                },
+                                
                               ];
+
+                            //   {
+                                //   id: 'e1-2',
+                                //   source: '1',
+                                //   target: '2',
+                                //   animated:true
+                                // },
+                                // {
+                                //   id: 'e1-3',
+                                //   source: '1',
+                                //   target: '3',
+                                // },
+                                // {
+                                //   id: 'e1-3',
+                                //   source: '1',
+                                //   target: '4',
+                                // },
                             res.json({'nodes':nodes,'edges':edges})
                         }
                     })

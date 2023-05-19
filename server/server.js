@@ -7,7 +7,7 @@ const app = express()
 
 // routes
 const apiRoute = require('./routes/apiRoute')
-const graphRoute = require('./routes/apiRoute')
+const graphRoute = require('./routes/graphRoutes')
 
 // global middleware
 app.use(cors())
