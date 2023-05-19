@@ -48,7 +48,7 @@ function Signin() {
                 {isPending ? <button  className={`bg-indigo-600 py-2 px-4 text-sm text-white rounded border border-green focus:outline-none focus:border-green-dark`} disabled>Loading..</button> : <button  className={`bg-indigo-600 py-2 px-4 text-sm text-white rounded border border-green focus:outline-none focus:border-green-dark`}>Signin</button>}
               </div>
               <div className='text-white flex justify-center'>
-                You don't have an account? <a className='text-black' href="signup">Clickhear...</a>
+                You don't have an account? <a className='text-black' href="signup">Click Here !!</a>
               </div>
               {error && <div className="error">{error}</div>}
             <div className="flex justify-center pt-3 google-auth-button">
