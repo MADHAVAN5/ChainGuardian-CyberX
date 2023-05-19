@@ -3,7 +3,10 @@ import React, { useState } from 'react'
 import './transaction.css'
 
 import useTransaction  from '../../hooks/useTransaction'
-import TransactionSection from '../../components/TransactionSection'
+import TransactionSection from '../../components/transactionSec'
+import Navbar from '../../components/navbar'
+import Find from '../../components/Find'
+import Table from '../../components/Table'
 
 function Transaction() {
   const [chain, setChain] = useState(null)
@@ -17,57 +20,12 @@ function Transaction() {
   }
 
   return (
-    <div className='h-screen flex bg-gray-bg1'>
-      <div className='custome-class max-w-md m-auto bg-indigo-600 rounded-lg shadow-default py-10 px-16'>
-        <h1 className='text-2xl font-medium text-white mt-4 mb-12 text-center'>
-          Submit the Transaction Details
-        </h1>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor='email' className='text-white'>Enter Transaction ID</label>
-                <input
-                    type='text'
-                    className={`w-full p-2 border rounded-md outline-none text-sm transition duration-150 ease-in-out mb-4`}
-                    id='txn_id'
-                    placeholder='Transaction ID'
-                    onChange={(e) => setTxnId(e.target.value)}
-                    value={txnId}
-                />
-            <div>
-            <label htmlFor='email' className='text-white'>Select Chain</label>
-              <label class="select" for="slct" >
-                <select id="slct" required="required" onChange={(e)=>setChain(e.target.value)}>
-                  <option value="" disabled="disabled" selected="selected">Select option</option>
-                  <option value="bitcoin">Bitcoin</option>
-                  <option value="bitcoin-cash">Bitcoin Cash</option>
-                  <option value="ethereum">Ethereum</option>
-                  <option value="litecoin">Litecoin</option>
-                  <option value="bitcoin-sv">Bitcoin-sv</option>
-                </select>
-                <svg>
-                  <use xlinkHref="#select-arrow-down"></use>
-                </svg>
-              </label>
-              <svg class="sprites">
-                <symbol id="select-arrow-down" viewbox="0 0 10 6">
-                  <polyline points="1 1 5 5 9 1"></polyline>
-                </symbol>
-              </svg>
-            </div>
-          </div>
-          <div className='flex justify-center items-center mt-6'>
-            {isPending ? <button className={`bg-indigo-600 py-2 px-4 text-sm text-white rounded border border-green focus:outline-none focus:border-green-dark`} disabled>Loading..</button> : <button className={`bg-indigo-600 py-2 px-4 text-sm text-white rounded border border-green focus:outline-none focus:border-green-dark`}>Find</button>}
-          </div>
-          {error && <div className="error">{error}</div>}
-          <div className='custome-class max-w-md m-auto bg-indigo-600 shadow-default py-10 px-16'>
-          {/* <h1 className='text-2xl font-medium text-white mt-4 mb-12 text-center'>
-              Transaction 0
-          </h1> */}
-          {data && <TransactionSection data={data}/> }
-          </div>
-        </form>
-      </div>
-    </div>
+    <>
+      <Navbar/>
+      <Find/>
+      <TransactionSection/>
+      <Table/>
+    </>
   )
 }
 

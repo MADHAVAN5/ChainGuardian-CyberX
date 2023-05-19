@@ -46,7 +46,7 @@ const AddressPage = () => {
     return (
         <>
             <div className='h-screen flex bg-gray-bg1'>
-                <div className='w-full max-w-md m-auto bg-indigo-600 rounded-lg shadow-default py-10 px-16'>
+                <div className='w-full grid max-w-md m-auto bg-indigo-600 rounded-lg shadow-default py-10 px-16'>
                     <h1 className='text-2xl font-medium text-white mt-4 mb-12 text-center'>
                         Submit the Address details
                     </h1>
