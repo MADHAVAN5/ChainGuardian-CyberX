@@ -8,29 +8,37 @@ const AddressPage = () => {
     const [err, setError] = useState(null)
     const [isPending, setPending] = useState(false)
     const { error, data: chainName, getChain } = useAddress()
-    const { data:addressData, dispatch } = useContext()
 
     const [isAddressValid, setAddressValid] = useState(false)
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        getChain(address)
         setError(null)
         setPending(true)
-        getChain(address)
         if (!error) {
-            const response = await fetch(`/api/addressData/${chainName.chain}/${address}`)
-            const json = await response.json()
-            if (!response.ok) {
+            if(chainName == null){
                 setPending(false)
-                dispatch({type:"ERROR",payload:null})
-                setError(json.error)
+            }else{
+                const response = await fetch(`/api/addressData/${chainName.chain}/${address}`)
+                const json = await response.json()
+                console.log(json)
+                if (!response.ok) {
+                    setPending(false)
+                    // dispatch({type:"ERROR",payload:null})
+                    setError(json.error)
+                }
+    
+                if (response.ok) {
+                    setPending(false)
+                    setError(null)
+                    // dispatch({type:"ADD",payload:json})
+                    //console.log(address,chainName)
+                    localStorage.setItem('chain',chainName.chain)
+                    localStorage.setItem('address',address)
+                }
             }
-
-            if (response.ok) {
-                setPending(false)
-                setError(null)
-                dispatch({type:"ADD",payload:json})
-            }
+            
         }
 
         else if ((isPending === false) && (chainName !== null)) {

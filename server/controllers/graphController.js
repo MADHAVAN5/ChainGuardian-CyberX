@@ -12,55 +12,48 @@ const accGraph = async (req, res) => {
     if (fs.existsSync('./controllers/data/'+address+'.json')) {
         finalData = JSON.parse(fs.readFileSync('./controllers/data/'+address+'.json').toString())
         var x = 0
-                            var y = 50
-                            var nodes = [
-                                {
-                                    id: 'walletId',
-                                    type: 'input',
-                                    data: { label: address },
-                                    position: { x: x, y: y },
-                                    style: { width: 280, height: 120 },
-                                }
-                            ]
-                            transKeys = Object.keys(finalData['detailTransactions'])
-                            y += 100
-                            x -+ 2200
-                            for (let h = 0; h < 5; h++) {
-                                var element = finalData['detailTransactions'][h];
-                                nodes.push({
-                                    id: transKeys[h],
-                                    type: 'custom',
-                                    data: {hash:transKeys[h], 
-                                        blockID:finalData['detailTransactions'][transKeys[h]]['block_id'],
-                                        blockID:finalData['detailTransactions'][transKeys[h]]['time'],
-                                        blockID:finalData['detailTransactions'][transKeys[h]]['usd'],
-                                        blockID:finalData['detailTransactions'][transKeys[h]]['transferred'],
-                                        type: 'Transaction', emoji: '💸'},
-                                    position: {x: x, y: y}
-                                })
-                                x += 500
-                            }
-                            var edges = [
+        var y = 50
+        noOfTrans = 5
+        var nodes = [
+            {
+                id: 'walletId',
+                type: 'input',
+                data: { label: address },
+                position: { x: x, y: y },
+                style: { width: 280, height: 120 },
+            }
+        ]
+        transKeys = Object.keys(finalData['detailTransactions'])
+        y += 100
+        x -+ 2200
+        for (let h = 0; h < noOfTrans; h++) {
+            var element = finalData['detailTransactions'][h];
+            nodes.push({
+                id: transKeys[h],
+                type: 'custom',
+                data: {hash:transKeys[h], 
+                    blockID:finalData['detailTransactions'][transKeys[h]]['block_id'],
+                    blockID:finalData['detailTransactions'][transKeys[h]]['time'],
+                    blockID:finalData['detailTransactions'][transKeys[h]]['usd'],
+                    blockID:finalData['detailTransactions'][transKeys[h]]['transferred'],
+                    type: 'Transaction', emoji: '💸'},
+                position: {x: x, y: y}
+            })
+            x += 500
+        }
+        var edges = [
                                 
-                              ];
-
-                            //   {
-                                //   id: 'e1-2',
-                                //   source: '1',
-                                //   target: '2',
-                                //   animated:true
-                                // },
-                                // {
-                                //   id: 'e1-3',
-                                //   source: '1',
-                                //   target: '3',
-                                // },
-                                // {
-                                //   id: 'e1-3',
-                                //   source: '1',
-                                //   target: '4',
-                                // },
-                            res.json({'nodes':nodes,'edges':edges})
+        ];
+        for (let h = 0; h < noOfTrans; h++) {
+          edges.push({
+              id: 'walletId-'+transKeys[h],
+              source: 'walletId',
+              target: transKeys[h], 
+              animated:true 
+            })
+        }
+        console.log(edges)
+        res.json({'nodes':nodes,'edges':edges})
     }else{
         const apiUrl = `https://api.blockchair.com/${chain}/dashboards/address/${address}?key=${process.env.APIKEY}`
         console.log(apiUrl)
@@ -122,6 +115,7 @@ const accGraph = async (req, res) => {
                             console.log('Error writing file', err)
                         } else {
                             console.log('Successfully wrote file')
+                            noOfTrans = 5
                             var x = 0
                             var y = 50
                             var nodes = [
@@ -136,7 +130,7 @@ const accGraph = async (req, res) => {
                             transKeys = Object.keys(finalData['detailTransactions'])
                             y += 100
                             x -+ 4000
-                            for (let h = 0; h < 5; h++) {
+                            for (let h = 0; h < noOfTrans; h++) {
                                 var element = finalData['detailTransactions'][h];
                                 nodes.push({
                                     id: transKeys[h],
@@ -154,24 +148,16 @@ const accGraph = async (req, res) => {
                             var edges = [
                                 
                               ];
-
-                            //   {
-                                //   id: 'e1-2',
-                                //   source: '1',
-                                //   target: '2',
-                                //   animated:true
-                                // },
-                                // {
-                                //   id: 'e1-3',
-                                //   source: '1',
-                                //   target: '3',
-                                // },
-                                // {
-                                //   id: 'e1-3',
-                                //   source: '1',
-                                //   target: '4',
-                                // },
-                            res.json({'nodes':nodes,'edges':edges})
+                              for (let h = 0; h < noOfTrans; h++) {
+                                edges.push({
+                                    id: 'walletId-'+transKeys[h],
+                                    source: 'walletId',
+                                    target: transKeys[h], 
+                                    animated:true 
+                                })
+                            }
+                            console.log(edges)
+                            res.json({'nodes':nodes, 'edges':edges})
                         }
                     })
                 }

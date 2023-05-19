@@ -7,8 +7,6 @@ import ReactFlow, {
     useNodesState,
     useEdgesState,
 } from 'reactflow';
-import useGraphAddress from '../hooks/useGraphAddress';
-
 import { nodes as initialNodes, edges as initialEdges } from './initial-elements';
 
 import CustomNode from './CustomNode';
@@ -26,10 +24,8 @@ const minimapStyle = {
 const onInit = (reactFlowInstance) => console.log('flow loaded:', reactFlowInstance);
 
 const OverviewFlow = () => {
-    const {err,isPending,data:initialElements ,getGraphAddress} = useGraphAddress()
-    getGraphAddress()
-    const [nodes, setNodes, onNodesChange] = useNodesState(initialElements.nodes);
-    const [edges, setEdges, onEdgesChange] = useEdgesState(initialElements.edges);
+    const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+    const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);
 
     // we are using a bit of a shortcut here to adjust the edge type
@@ -39,7 +35,6 @@ const OverviewFlow = () => {
             const edgeType = nodes.find((node) => node.type === 'custom').data.selects[edge.sourceHandle];
             edge.type = edgeType;
         }
-
         return edge;
     });
 

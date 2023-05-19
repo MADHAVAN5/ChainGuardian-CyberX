@@ -31,7 +31,7 @@ const accDetails = async (req, res) => {
     return res.status(400).json({ error: 'Missing parameters' })
   }
   if (fs.existsSync('./controllers/data/'+address+'.json')) {
-      finalData = JSON.parse(fs.readFileSync('./controller/data/'+address+'.json').toString())
+      finalData = JSON.parse(fs.readFileSync('./controllers/data/'+address+'.json').toString())
       res.json(finalData)
   }else{
     const apiUrl = `https://api.blockchair.com/${chain}/dashboards/address/${address}?key=${process.env.APIKEY}`
