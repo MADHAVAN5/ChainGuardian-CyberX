@@ -9,7 +9,7 @@ import Forgot from './pages/forgot'
 import Dashboard from './pages/dashboardPage'
 import Transaction from './pages/transaction/transaction'
 import Tree from './pages/tree'
-import Address from './pages/address/addressPage'
+import Address from './pages/addressPage'
 import Block from './pages/blockPage'
 
 function App() {

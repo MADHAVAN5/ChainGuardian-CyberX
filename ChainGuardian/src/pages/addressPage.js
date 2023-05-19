@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 
 import './addressPage.css'
 
@@ -9,8 +9,8 @@ const AddressPage = () => {
     const [address, setAddress] = useState(null)
     const [err, setError] = useState(null)
     const [isPending, setPending] = useState(false)
-    const [data, setData] = useState(null)
     const { error, data: chainName, getChain } = useAddress()
+    const { data:addressData, dispatch } = useContext()
 
     const [isAddressValid, setAddressValid] = useState(false)
 
@@ -22,18 +22,16 @@ const AddressPage = () => {
         if (!error) {
             const response = await fetch(`/api/addressData/${chainName.chain}/${address}`)
             const json = await response.json()
-            console.log(json)
             if (!response.ok) {
                 setPending(false)
-                setData(null)
+                dispatch({type:"ERROR",payload:null})
                 setError(json.error)
             }
 
             if (response.ok) {
                 setPending(false)
                 setError(null)
-                setData(json)
-                console.log(data)
+                dispatch({type:"ADD",payload:json})
             }
         }
 
@@ -89,7 +87,7 @@ const AddressPage = () => {
                         </div>
                         {err && <div className="error">{err}</div>}
                         {isAddressValid && <div class='error'>Could not fetch the details for this address</div>}
-                        {/* {data && <TransactionSection data={data} />} */}
+                        {/* {addressData && <TransactionSection data={addressData} />} */}
                     </form>
                 </div>
             </div>
