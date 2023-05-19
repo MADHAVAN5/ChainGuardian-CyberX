@@ -72,18 +72,17 @@ const accDetails = async (req, res) => {
           await axios.get(tempUrl)
             .then(response =>{
               var tmpData = response.data
-              //console.log(tmpData)
               finalData['detailTransactions'][element] = {}
-              finalData['detailTransactions'][element]['block_id'] = tmpData.element.transaction.block_id
-              finalData['detailTransactions'][element]['sender'] = tmpData.element.transaction.id
-              finalData['detailTransactions'][element]['receiver'] = tmpData.element.transaction.date
-              finalData['detailTransactions'][element]['time'] = tmpData.element.transaction.time
-              finalData['detailTransactions'][element]['usd'] = tmpData.element.transaction.usd
+              finalData['detailTransactions'][element]['block_id'] = tmpData.data[element]['transaction'].block_id
+              finalData['detailTransactions'][element]['sender'] = tmpData.data[element]['transaction'].id
+              finalData['detailTransactions'][element]['receiver'] = tmpData.data[element]['transaction'].date
+              finalData['detailTransactions'][element]['time'] =tmpData.data[element]['transaction'].time
+              finalData['detailTransactions'][element]['usd'] = tmpData.data[element]['transaction'].usd
               finalData['detailTransactions'][element]['transferred'] = true
 
               //console.log(index, finalData['transactions'].length)
               if(index+1 == finalData['transactions'].length){
-                console.log(finalData) 
+                //console.log(finalData) 
                 res.json(finalData)
               }
             })
@@ -112,14 +111,15 @@ const accValidator = async (req, res) => {
   for (let j = 0; j < blockChains.length; j++) {
     var valid = WAValidator.validate(address, blockChains[j]);
     if(valid){
-      chainVerified = blockKeyword[j]
+      chainVerified = blockKeyword[blockChains[j]]
       break;
     }
     else{
       continue 
     }
   }
-  console.log(chainVerified)
+  finalBlockchain = {'chain':chainVerified}
+  res.json(finalBlockchain)
 }
 
 module.exports = { tnxDetails, accDetails, accValidator}

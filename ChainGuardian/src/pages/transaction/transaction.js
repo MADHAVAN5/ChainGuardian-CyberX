@@ -20,7 +20,7 @@ function Transaction() {
     <div className='h-screen flex bg-gray-bg1'>
       <div className='custome-class max-w-md m-auto bg-indigo-600 rounded-lg shadow-default py-10 px-16'>
         <h1 className='text-2xl font-medium text-white mt-4 mb-12 text-center'>
-          Submit your Transaction Details
+          Submit the Transaction Details
         </h1>
         <form onSubmit={handleSubmit}>
           <div>
@@ -34,7 +34,7 @@ function Transaction() {
                     value={txnId}
                 />
             <div>
-            <label htmlFor='email' className='text-white'>Select Your Chain</label>
+            <label htmlFor='email' className='text-white'>Select Chain</label>
               <label class="select" for="slct" >
                 <select id="slct" required="required" onChange={(e)=>setChain(e.target.value)}>
                   <option value="" disabled="disabled" selected="selected">Select option</option>

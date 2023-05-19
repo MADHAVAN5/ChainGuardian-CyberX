@@ -7,20 +7,19 @@ import useAddress from '../../hooks/useAddress'
 const AddressPage = () => {
     const [chain, setChain] = useState(null)
     const [address, setAddress] = useState(null)
-    const { error, isPending, data, whichChain, checkAddressStatus, getAddressData } = useAddress()
+    const { error, isPending, data,whichChain, checkAddressStatusAndFetchingDetails } = useAddress()
     const [isAddressValid, setAddressValid] = useState(false)
  
     const handleSubmit = (e) => {
         e.preventDefault()
-        checkAddressStatus(address)
-        if((isPending === false) && whichChain){
-            getAddressData(whichChain,address)
+        checkAddressStatusAndFetchingDetails(address)
+            console.log(data)
+        if((isPending === false) && (whichChain !== null)){
             setAddressValid(false)
         }else{
             setAddressValid(true)
         }
     }
-
     return (
         <>
             <div className='h-screen flex bg-gray-bg1'>
@@ -40,7 +39,7 @@ const AddressPage = () => {
                                 value={address}
                             />
                             <div>
-                                <label htmlFor='email' className='text-white'>Select Your Chain</label>
+                                <label htmlFor='email' className='text-white'>Select Chain</label>
                                 <label class="select" for="slct" >
                                     <select id="slct" required="required" onChange={(e) => setChain(e.target.value)}>
                                         <option value="" disabled="disabled" selected="selected">Select option</option>
