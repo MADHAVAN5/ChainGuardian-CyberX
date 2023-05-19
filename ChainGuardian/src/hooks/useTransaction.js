@@ -2,26 +2,24 @@ import { useState } from "react"
 
 const useTransaction = () => {
     const [error, setError] = useState(null)
-    const [isPending, setPending] = useState(false)
     const [data, setData] = useState(null)
 
-    const getTransaction = async (chain, txn_id) => {
+    const getTransaction = async (chain,address) => {
         setError(null)
 
-        await fetch(`/api/addressData/${chain}/${txn_id}`)
-        .then((response)=>{console.log(response)})
-        .then(data=>{
-            console.log(data)
-            setPending(false)
-            setError(null)
-            setData(data)
-        }).catch(err=>{
-            setPending(false)
+        const response = await fetch(`/api/transData/${chain}/${address}`)
+        const json = await response.json()
+        console.log(json)
+        if (!response.ok) {
             setData(null)
-            setError(err.message)
-        })
+            setError(json.error)
+        }
+        if (response.ok) {
+            setError(null)
+            setData(json)
+        }
     }
-    return { error, isPending, data, getTransaction }
+    return { error, data, getTransaction }
 }
 
 export default useTransaction
