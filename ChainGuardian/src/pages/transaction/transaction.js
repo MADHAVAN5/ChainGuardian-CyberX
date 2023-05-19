@@ -18,7 +18,7 @@ function Transaction() {
 
   return (
     <div className='h-screen flex bg-gray-bg1'>
-      <div className='w-full max-w-md m-auto bg-indigo-600 rounded-lg shadow-default py-10 px-16'>
+      <div className='custome-class max-w-md m-auto bg-indigo-600 rounded-lg shadow-default py-10 px-16'>
         <h1 className='text-2xl font-medium text-white mt-4 mb-12 text-center'>
           Submit your Transaction Details
         </h1>
@@ -59,7 +59,12 @@ function Transaction() {
             {isPending ? <button className={`bg-indigo-600 py-2 px-4 text-sm text-white rounded border border-green focus:outline-none focus:border-green-dark`} disabled>Loading..</button> : <button className={`bg-indigo-600 py-2 px-4 text-sm text-white rounded border border-green focus:outline-none focus:border-green-dark`}>Find</button>}
           </div>
           {error && <div className="error">{error}</div>}
+          <div className='custome-class max-w-md m-auto bg-indigo-600 shadow-default py-10 px-16'>
+          {/* <h1 className='text-2xl font-medium text-white mt-4 mb-12 text-center'>
+              Transaction 0
+          </h1> */}
           {data && <TransactionSection data={data}/> }
+          </div>
         </form>
       </div>
     </div>

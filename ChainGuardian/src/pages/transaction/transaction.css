@@ -52,4 +52,7 @@
     pointer-events: none;
     user-select: none;
   }
-  
+  .custome-class{
+    width: 100%;
+    max-width: 100%;
+  }
