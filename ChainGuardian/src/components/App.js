@@ -12,7 +12,6 @@ import { nodes as initialNodes, edges as initialEdges } from './initial-elements
 import CustomNode from './CustomNode';
 
 import 'reactflow/dist/style.css';
-import './overview.css';
 
 const nodeTypes = {
     custom: CustomNode,
@@ -41,7 +40,7 @@ const OverviewFlow = () => {
     });
 
     return (
-        <div style={{ height: '900px', width: '1900px' }}>
+        <div style={{ height: '85vh', width: '100vw' }}>
             <ReactFlow
                 nodes={nodes}
                 edges={edgesWithUpdatedTypes}
@@ -53,7 +52,6 @@ const OverviewFlow = () => {
                 attributionPosition="top-right"
                 nodeTypes={nodeTypes}
             >
-                <MiniMap style={minimapStyle} zoomable pannable />
                 <Controls />
                 <Background color="#aaa" gap={16} />
             </ReactFlow>

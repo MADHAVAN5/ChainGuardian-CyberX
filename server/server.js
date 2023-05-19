@@ -7,6 +7,7 @@ const app = express()
 
 // routes
 const apiRoute = require('./routes/apiRoute')
+const graphRoute = require('./routes/apiRoute')
 
 // global middleware
 app.use(cors())
@@ -20,6 +21,7 @@ app.listen(PORT, () => {
 })
 
 app.use("/api", apiRoute)
+app.use("/tree", graphRoute)
 
 // routes for api handling
 app.use("/",(req,res)=>{
@@ -27,8 +29,6 @@ app.use("/",(req,res)=>{
 })
 
 // route for app
-
-
 
 app.use('', (req, res) => {
     res.status(404).send('URL not found !')
