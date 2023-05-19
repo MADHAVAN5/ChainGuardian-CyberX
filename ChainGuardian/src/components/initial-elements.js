@@ -5,7 +5,7 @@ export const nodes = [
   {
     id: '1',
     type: 'custom',
-    data: { name: 'Jane Doe', job: 'CEO', emoji: '😎' },
+    data: { name: 'Tyler Weary', job: 'Designer', emoji: '💸' },
     position: { x: 0, y: 50 },
     style: { width: 180, height: 100 },
   },
