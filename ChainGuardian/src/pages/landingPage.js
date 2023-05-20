@@ -3,6 +3,7 @@ import Navbar from "../components/navbar";
 import Hero from "../components/hero";
 import SectionTitle from "../components/sectionTitle";
 
+import Service from "../components/service"
 
 const landingPage = () => {
   return (
@@ -16,6 +17,8 @@ const landingPage = () => {
         and indie projects. Its built with Next.js & TailwindCSS. And its
         completely open-source.
     </SectionTitle>
+    <h1 className='text-sm font-bold tracking-wider text-indigo-600 uppercase'>Service</h1>
+    <Service/>
     </>
     
   )
