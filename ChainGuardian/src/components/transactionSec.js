@@ -15,26 +15,20 @@ export default function Example({data}) {
                 <CardBody>
                     <RocketLaunchIcon className="text-blue-500 w-12 h-12 mb-4" />
                     <Typography className='grid grid-rows-6 grid-flow-col gap-4'>
-                        <div className="font-semibold">Transaction</div>
+                        <div className="font-semibold">Transaction ID</div>
                         <div>{data['transaction'].id}</div>
-                        <div>Transaction</div>
-                        <div>data</div>
-                        <div>Transaction</div>
-                        <div>data</div>
-                        <div>Transaction</div>
-
-                        <div>data</div>
-                        <div>Transaction</div>
-                        <div>data</div>
-                        <div>Transaction</div>
-                        <div>data</div>
-                        <div>Transaction</div>
-
-                        <div>data</div>
-                        <div>Transaction</div>
-                        <div>data</div>
-                        <div>Transaction</div>
-                        <div>data</div>
+                     <div className="font-semibold">Block ID</div>
+                     <div>{data['transaction'].time}</div>
+                     <div className="font-semibold">Time</div>
+                     <div>{data['transaction'].block_id}</div>
+                     <div className="font-semibold">Size</div>
+                      <div>{data['transaction'].size}</div>
+                     <div className="font-semibold">Weight</div>
+                     <div>{data['transaction'].weight}</div>
+                     <div className="font-semibold">Fees USD</div>
+                     <div>{data['transaction'].fee_usd}</div>
+                     <div className="font-semibold">Total USD</div>
+                      <div>{data['transaction'].input_total_usd}</div>
                     </Typography>
                 </CardBody>
                 
