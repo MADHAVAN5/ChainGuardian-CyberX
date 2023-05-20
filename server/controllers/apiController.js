@@ -19,8 +19,8 @@ const tnxDetails = async (req, res) => {
       console.log(data)
       finalSend = {}
       finalSend['transaction'] = {}
-      finalSend['inputs'] = {}
-      finalSend['outputs'] = {}
+      finalSend['inputs'] = []
+      finalSend['outputs'] = []
       finalSend['transaction']['id'] = data[txnId]['transaction'].id
       finalSend['transaction']['block_id'] = data[txnId]['transaction'].block_id
       finalSend['transaction']['time'] = data[txnId]['transaction'].time
@@ -29,22 +29,30 @@ const tnxDetails = async (req, res) => {
       finalSend['transaction']['size'] = data[txnId]['transaction'].size
       finalSend['transaction']['weight'] = data[txnId]['transaction'].size
 
+      console.log(data[txnId]['inputs'])
       for (let i = 0; i < data[txnId]['inputs'].length; i++) {
-        finalSend['inputs'][i] = {}
-        finalSend['inputs'][i]['id'] = data[txnId]['inputs'][i].id
-        finalSend['inputs'][i]['block_id'] = data[txnId]['inputs'][i].block_id
-        finalSend['inputs'][i]['time'] = data[txnId]['inputs'][i].time
-        finalSend['inputs'][i]['recipient'] = data[txnId]['inputs'][i].recipient
-        finalSend['inputs'][i]['transfered'] = data[txnId]['inputs'][i].is_spent
+        tmp = {}
+        tmp['id'] = data[txnId]['inputs'][i].transaction_id
+        tmp['block_id'] = data[txnId]['inputs'][i].block_id
+        tmp['time'] = data[txnId]['inputs'][i].time
+        tmp['usd'] = data[txnId]['inputs'][i].value_usd
+        tmp['recipient'] = data[txnId]['inputs'][i].recipient
+        tmp['transfered'] = data[txnId]['inputs'][i].is_spent
+
+        finalSend['inputs'].push(tmp)
+
       }
 
       for (let i = 0; i < data[txnId]['outputs'].length; i++) {
-        finalSend['outputs'][i] = {}
-        finalSend['outputs'][i]['id'] = data[txnId]['outputs'][i].id
-        finalSend['outputs'][i]['block_id'] = data[txnId]['outputs'][i].block_id
-        finalSend['outputs'][i]['time'] = data[txnId]['outputs'][i].time
-        finalSend['outputs'][i]['recipient'] = data[txnId]['outputs'][i].recipient
-        finalSend['outputs'][i]['transfered'] = data[txnId]['outputs'][i].is_spent
+        tmp = {}
+        tmp['id'] = data[txnId]['outputs'][i].transaction_id
+        tmp['block_id'] = data[txnId]['outputs'][i].block_id
+        tmp['time'] = data[txnId]['outputs'][i].time
+        tmp['usd'] = data[txnId]['outputs'][i].value_usd
+        tmp['recipient'] = data[txnId]['outputs'][i].recipient
+        tmp['transfered'] = data[txnId]['outputs'][i].is_spent
+
+        finalSend['outputs'].push(tmp)
       }
       //console.log(data)
       res.json(finalSend)

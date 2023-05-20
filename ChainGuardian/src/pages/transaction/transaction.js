@@ -21,7 +21,7 @@ function Transaction() {
       <Navbar/>
       <Find handleSubmit={handleSubmit}/>
       {data && <TransactionSection data={data} txnId={Id}/>}
-      <Table data={data}/>
+      {data && <Table data={data}/>}
     </>
   )
 }
