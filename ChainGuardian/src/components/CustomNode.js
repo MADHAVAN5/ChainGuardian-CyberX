@@ -5,6 +5,7 @@ import './graphNode.css'
 import { Link } from 'react-router-dom';
 
 function CustomNode({ data }) {
+  const chain = localStorage.getItem('chain_on_txn')
   return (
     <div className="px-4 py-2 shadow-md rounded-md bg-white border-2 border-stone-400">
       <div className="flex graphNode">
@@ -12,14 +13,14 @@ function CustomNode({ data }) {
       { //Check if message failed
         (data.usd <= 50000)
           ? <div className="ml-2">
-          <div className="hash-txt text-sm font-bold"><Link to={`/detail/`+data.hash}>{data.hash}</Link></div>
+          <div className="hash-txt text-sm font-bold"><Link to={`/transaction?chain=${chain}&txn_id=${data.hash}`}>{data.hash}</Link></div>
           <div className="text-sm font-bold">Block ID : {data.block_id}</div>
           <div className="text-sm font-bold">{data.time}</div>
           <div className="text-sm font-bold">USD : {data.usd}</div>
           <div className="text-gray-500">{data.emoji} | {data.type}</div>
         </div>
           : <div className="ml-2 annonomys">
-          <div className="hash-txt text-sm font-bold"><Link to={`/detail/`+data.hash}>{data.hash}</Link></div>
+          <div className="hash-txt text-sm font-bold"><Link to={`/transaction?chain=${chain}&txn_id=${data.hash}`}>{data.hash}</Link></div>
           <div className="text-sm font-bold">Block ID :{data.block_id}</div>
           <div className="text-sm font-bold">{data.time}</div>
           <div className="text-sm font-bold">USD : {data.usd}</div>
