@@ -1,11 +1,24 @@
 import React, { useContext, useState } from 'react'
 
+import {
+    Card,
+    CardBody,
+    CardFooter,
+    Typography,
+    Button,
+} from "@material-tailwind/react";
+import { RocketLaunchIcon } from "@heroicons/react/24/solid";
+import { ArrowLongRightIcon } from "@heroicons/react/24/outline";
+
 import useAddress from '../hooks/useAddress'
+import TransSingleSection from '../components/transSingleSection'
+import Navbar from '../components/navbar'
 
 const AddressPage = () => {
     const [chain, setChain] = useState(null)
     const [address, setAddress] = useState(null)
     const [err, setError] = useState(null)
+    const [data, setData] = useState(null)
     const [isPending, setPending] = useState(false)
     const { error, data: chainName, getChain } = useAddress()
 
@@ -26,12 +39,14 @@ const AddressPage = () => {
                 if (!response.ok) {
                     setPending(false)
                     // dispatch({type:"ERROR",payload:null})
+                    setData(null)
                     setError(json.error)
                 }
     
                 if (response.ok) {
                     setPending(false)
                     setError(null)
+                    setData(json)
                     // dispatch({type:"ADD",payload:json})
                     //console.log(address,chainName)
                     localStorage.setItem('chain',chainName.chain)
@@ -49,55 +64,70 @@ const AddressPage = () => {
     }
     return (
         <>
-            <div className='h-screen flex bg-gray-bg1'>
-                <div className='w-full grid max-w-md m-auto bg-indigo-600 rounded-lg shadow-default py-10 px-16'>
-                    <h1 className='text-2xl font-medium text-white mt-4 mb-12 text-center'>
-                        Submit the Address details
-                    </h1>
-                    <form onSubmit={handleSubmit}>
-                        <div>
-                            <label htmlFor='email' className='text-white'>Chain address</label>
-                            <input
-                                type='text'
-                                className={`w-full p-2 border rounded-md outline-none text-sm transition duration-150 ease-in-out mb-4`}
-                                id='chain_address'
-                                placeholder='enter chain address'
-                                onChange={(e) => setAddress(e.target.value)}
+        <Navbar/>
+        <div className='w-full pt-4 bg-gray-bg1'>
+            <div className='w-full rounded-lg shadow-default'>
+                <form onSubmit={handleSubmit} className="grid grid-cols-10 gap-4">
+                    <div className="col-span-8">
+                        <input
+                            type='text'
+                            className={`w-full p-2 border rounded-md outline-none text-sm transition duration-150 ease-in-out mb-4`}
+                            id='chain_address'
+                            placeholder='enter chain address'
+                            onChange={(e) => setAddress(e.target.value)}
                                 value={address}
-                            />
-                            <div>
-                                <label htmlFor='email' className='text-white'>Select Chain</label>
-                                <label class="select" for="slct" >
-                                    <select id="slct" required="required" onChange={(e) => setChain(e.target.value)}>
-                                        <option value="" disabled="disabled" selected="selected">Select option</option>
-                                        <option value=" " hidden selected></option>
-                                        <option value="bitcoin">Bitcoin</option>
-                                        <option value="bitcoin-cash">Bitcoin Cash</option>
-                                        <option value="ethereum">Ethereum</option>
-                                        <option value="litecoin">Litecoin</option>
-                                        <option value="bitcoin-sv">Bitcoin-sv</option>
-                                    </select>
-                                    <svg>
-                                        <use xlinkHref="#select-arrow-down"></use>
-                                    </svg>
-                                </label>
-                                <svg class="sprites">
-                                    <symbol id="select-arrow-down" viewbox="0 0 10 6">
-                                        <polyline points="1 1 5 5 9 1"></polyline>
-                                    </symbol>
-                                </svg>
-                            </div>
-                        </div>
-                        <div className='flex justify-center items-center mt-6'>
-                            {(isAddressValid !== true) && isPending ? <button className={`bg-indigo-600 py-2 px-4 text-sm text-white rounded border border-green focus:outline-none focus:border-green-dark`} disabled>Loading..</button> : <button className={`bg-indigo-600 py-2 px-4 text-sm text-white rounded border border-green focus:outline-none focus:border-green-dark`}>Find</button>}
-                        </div>
-                        {err && <div className="error">{err}</div>}
-                        {isAddressValid && <div class='error'>Could not fetch the details for this address</div>}
-                        {/* {addressData && <TransactionSection data={addressData} />} */}
-                    </form>
-                </div>
+                        />
+                    </div>
+                    <div className="col-span-2">
+                    {(isAddressValid !== true) && isPending ? <button className={`bg-indigo-600 py-2 px-4 text-sm text-white rounded border border-green focus:outline-none focus:border-green-dark`} disabled>Loading..</button> : <button className='w-full bg-indigo-600 p-2 text-sm text-white rounded border border-green focus:outline-none focus:border-green-dark'>Find</button>}
+                    </div>
+                </form>
             </div>
-        </>
+            {err && <div className="error">{err}</div>}
+                        {isAddressValid && <div class='error'>Could not fetch the details for this address</div>}
+        </div>
+
+        {data && <><Card className="mt-6 w-full bg-white rounded-lg p-10">
+                <CardBody>
+                    <RocketLaunchIcon className="text-blue-500 w-12 h-12 mb-4" />
+                    <Typography className='grid grid-rows-6 grid-flow-col gap-4'>
+                        <div className="font-semibold">Address ID</div>
+                        <div>{data.address}</div>
+                     <div className="font-semibold">detected Chain</div>
+                     <div>{data.detectedChain}</div>
+                     <div className="font-semibold">balance USD</div>
+                     <div>{data.balanceUSD}</div>
+                     <div className="font-semibold">balance Coin</div>
+                      <div>{data.balanceETH}</div>
+                     <div className="font-semibold">send USD</div>
+                     <div>{data.sendUSD}</div>
+                     <div className="font-semibold">received USD</div>
+                     <div>{data.receivedUSD}</div>
+                     <div className="font-semibold">first Received</div>
+                      <div>{data.firstReceived}</div>
+                      <div className="font-semibold">transaction Count</div>
+                      <div>{data.transactionCount}</div>
+                      <div className="font-semibold">last Received</div>
+                      <div>{data.lastReceived}</div>
+                      <div className="font-semibold">first Send</div>
+                      <div>{data.firstSend}</div>
+                      <div className="font-semibold">last Send</div>
+                      <div>{data.lastSend}</div>
+                    </Typography>
+                </CardBody>
+                
+                <CardFooter className="ransition ease-in-out delay-150 bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-300 pt-0 mt-5 bg-indigo-600 rounded-md w-48">
+                    <a href="#" className="inline-block">
+                        <Button size="sm" variant="text" className="flex items-center text-white gap-2">
+                        data
+                            <ArrowLongRightIcon strokeWidth={2} className="w-4 h-4" />
+                        </Button>
+                    </a>
+                </CardFooter>
+            </Card></>}
+            <div className='text-sky-500 text-2xl underline-offset-1 pt-4'>Recent Transactions</div>
+            {data && Object.entries(data.detailTransactions).map((single) =>{ return <TransSingleSection key={single} data={single}/> })}
+        </>//
     )
 }
 
