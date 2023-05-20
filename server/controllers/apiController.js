@@ -79,38 +79,38 @@ const accDetails = async (req, res) => {
     axios.get(apiUrl)
       .then(async(response) =>{
         const data = response.data
-        //console.log(data)
-        finalData['address'] = address
-        finalData['detectedChain'] = chain
-        finalData['balanceUSD'] = data.data[address]["address"]['balance_usd']
-        finalData['balanceETH'] = data.data[address]["address"]['balance'] / 1000000000000000000
-        finalData['sendUSD'] = data.data[address]["address"]['spent_usd']
-        finalData['feesUSD'] = data.data[address]["address"]['fees_usd']
-        finalData['receivedUSD'] = data.data[address]["address"]['received_usd']
-        finalData['firstReceived'] = data.data[address]["address"]['first_seen_receiving']
-        finalData['transactionCount'] = data.data[address]["address"]['transaction_count']
-        finalData['lastReceived'] = data.data[address]["address"]['first_seen_spending']
-        finalData['firstSend'] = data.data[address]["address"]['first_seen_spending']
-        finalData['lastSend'] = data.data[address]["address"]['last_seen_spending']
+            //console.log(data)
+            finalData['address'] = address
+            finalData['detectedChain'] = chain
+            finalData['balanceUSD'] = data.data[address]["address"]['balance_usd']
+            finalData['balanceETH'] = data.data[address]["address"]['balance'] / 1000000000000000000
+            finalData['sendUSD'] = data.data[address]["address"]['spent_usd']
+            finalData['feesUSD'] = data.data[address]["address"]['fees_usd']
+            finalData['receivedUSD'] = data.data[address]["address"]['received_usd']
+            finalData['firstReceived'] = data.data[address]["address"]['first_seen_receiving']
+            finalData['transactionCount'] = data.data[address]["address"]['transaction_count']
+            finalData['lastReceived'] = data.data[address]["address"]['first_seen_spending']
+            finalData['firstSend'] = data.data[address]["address"]['first_seen_spending']
+            finalData['lastSend'] = data.data[address]["address"]['last_seen_spending']
+    
+            if(chain != 'bitcoin'){
+            finalData['detailTransactions'] = {}
+            finalData['transactions'] = []
+                for (let i = 0; i < data.data[address]["calls"].length; i++) {
+                finalData['detailTransactions'][i] = {}
+                finalData['transactions'].push(data.data[address]["calls"][i].transaction_hash)
+                finalData['detailTransactions'][i]['sender'] = data.data[address]["calls"][i].sender
+                finalData['detailTransactions'][i]['receiver'] = data.data[address]["calls"][i].recipient
+                finalData['detailTransactions'][i]['time'] = data.data[address]["calls"][i].time
+                finalData['detailTransactions'][i]['usd'] = data.data[address]["calls"][i].value_usd
+                finalData['detailTransactions'][i]['transferred'] = data.data[address]["calls"][i].transferred
+                finalData['detailTransactions'][i]['block_id'] = data.data[address]["calls"][i].block_id
+                }
+            }else{
+            finalData['transactions'] = data.data[address]["transactions"]
+            finalData['detailTransactions'] = {}
   
-        if(chain != 'bitcoin'){
-          finalData['detailTransactions'] = {}
-          finalData['transactions'] = []
-            for (let i = 0; i < data.data[address]["calls"].length; i++) {
-              finalData['detailTransactions'][i] = {}
-              finalData['transactions'].push(data.data[address]["calls"][i].transaction_hash)
-              finalData['detailTransactions'][i]['sender'] = data.data[address]["calls"][i].sender
-              finalData['detailTransactions'][i]['receiver'] = data.data[address]["calls"][i].recipient
-              finalData['detailTransactions'][i]['time'] = data.data[address]["calls"][i].time
-              finalData['detailTransactions'][i]['usd'] = data.data[address]["calls"][i].value_usd
-              finalData['detailTransactions'][i]['transferred'] = data.data[address]["calls"][i].transferred
-              finalData['detailTransactions'][i]['block_id'] = data.data[address]["calls"][i].block_id
-            }
-        }else{
-          finalData['transactions'] = data.data[address]["transactions"]
-          finalData['detailTransactions'] = {}
-  
-          for (let index = 0; index < finalData['transactions'].length; index++) {
+          for (let index = 0; index < 10; index++) {
             var element = finalData['transactions'][index];
             tempUrl = `https://api.blockchair.com/${chain}/dashboards/transaction/${element}?key=${process.env.APIKEY}`
             await axios.get(tempUrl)
@@ -118,10 +118,10 @@ const accDetails = async (req, res) => {
                 var tmpData = response.data
                 finalData['detailTransactions'][element] = {}
                 finalData['detailTransactions'][element]['block_id'] = tmpData.data[element]['transaction'].block_id
-                finalData['detailTransactions'][element]['sender'] = tmpData.data[element]['transaction'].id
-                finalData['detailTransactions'][element]['receiver'] = tmpData.data[element]['transaction'].date
+                finalData['detailTransactions'][element]['sender'] = tmpData.data[element]['inputs'][0].recipient
+                finalData['detailTransactions'][element]['receiver'] = tmpData.data[element]['outputs'][0].recipient
                 finalData['detailTransactions'][element]['time'] =tmpData.data[element]['transaction'].time
-                finalData['detailTransactions'][element]['usd'] = tmpData.data[element]['transaction'].usd
+                finalData['detailTransactions'][element]['usd'] = tmpData.data[element]['transaction'].input_total_usd
                 finalData['detailTransactions'][element]['transferred'] = true
                 
                 //console.log(index, finalData['transactions'].length)
@@ -157,9 +157,9 @@ const accValidator = async (req, res) => {
   if (!address) {
     return res.status(400).json({ error: 'Missing parameters' })
   }
-  blockChains = ['0x','Aave Coin','Algorand','Bitcoin','Chainlink','CUSD','Dash','DogeCoin','Ethereum','LiteCoin','Matic','Neo','Polymath','Ripple','Solana','Stellar','Tether','TrueUSD','Uniswap Coin','ZenCash']
+  blockChains = ['0x','Aave Coin','Algorand','Bitcoin','Binance','Chainlink','CUSD','Dash','DogeCoin','Ethereum','LiteCoin','Matic','Neo','Polymath','Ripple','Solana','Stellar','Tether','TrueUSD','Uniswap Coin','ZenCash']
   chainVerified = null
-  blockKeyword = {'Bitcoin':'bitcoin','DogeCoin':'dogecoin','Ethereum':'ethereum','Ripple':'ripple','Stellar':'stellar','Dash':'dash','LiteCoin':'litecoin','Cardano':'cardano'}
+  blockKeyword = {'Bitcoin':'bitcoin','DogeCoin':'dogecoin','Binance':'bnb','Ethereum':'ethereum','Ripple':'ripple','Stellar':'stellar','Dash':'dash','LiteCoin':'litecoin','Cardano':'cardano'}
 
   for (let j = 0; j < blockChains.length; j++) {
     var valid = WAValidator.validate(address, blockChains[j]);

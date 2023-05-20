@@ -13,7 +13,7 @@ const accGraph = async (req, res) => {
         finalData = JSON.parse(fs.readFileSync('./controllers/data/'+address+'.json').toString())
         var x = 0
         var y = 50
-        noOfTrans = 5
+        noOfTrans = 7
         var nodes = [
             {
                 id: 'walletId',
@@ -128,7 +128,7 @@ const accGraph = async (req, res) => {
             finalData['transactions'] = data.data[address]["transactions"]
             finalData['detailTransactions'] = {}
     
-            for (let index = 0; index < finalData['transactions'].length; index++) {
+            for (let index = 0; index < 10; index++) {
                 var element = finalData['transactions'][index];
                 tempUrl = `https://api.blockchair.com/${chain}/dashboards/transaction/${element}?key=${process.env.APIKEY}`
                 await axios.get(tempUrl)
